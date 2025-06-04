@@ -24,7 +24,7 @@ const Header: React.FC = () => {
     { name: 'About', href: '#about' },
     { name: 'Projects', href: '#projects' },
     { name: 'Testimonials', href: '#testimonials' },
-    { name: 'Blog', href: '#blog' },
+    // { name: 'Blog', href: '#blog' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -70,7 +70,7 @@ const Header: React.FC = () => {
                   : 'gradient-text'
               }`}
             >
-              {theme === 'cyber' ? 'PORTFOLIO.EXE' : 'Portfolio'}
+              {theme === 'cyber' ? 'Godfirst Wilfred' : 'Godfirst Wilfred'}
             </a>
           </motion.div>
 

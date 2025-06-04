@@ -72,13 +72,13 @@ const About: React.FC<AboutProps> = ({ profile }) => {
       period: '2020 - 2024',
       description: 'Led IT operations and system analysis for 5 years. Managed infrastructure, analyzed business requirements, and implemented technology solutions to optimize operations and enhance system performance.'
     }
-  ];  return (
+  ];return (
     <section id="about" className={`section-padding transition-all duration-1000 relative ${
       theme === 'cyber' 
         ? 'bg-gradient-to-br from-cyber-950 via-cyber-900 to-cyber-800' 
         : theme === 'dark'
         ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700'
-        : 'bg-premium-gradient'
+        : 'bg-gradient-to-br from-gray-50 via-white to-purple-50'
     }`}>
       {/* Background Effects */}
       {theme === 'cyber' && (
@@ -120,16 +120,17 @@ const About: React.FC<AboutProps> = ({ profile }) => {
                     : 'grayscale(0.3) brightness(1.1)',
                 }}
               />
-                {/* Overlay for better text readability */}
+              
+              {/* Overlay for better text readability */}
               <div 
                 className={`absolute inset-0 rounded-2xl transition-all duration-500 ${
                   theme === 'cyber' 
                     ? 'bg-gradient-to-br from-cyan-900/60 via-slate-900/50 to-purple-900/60' 
                     : theme === 'dark'
                     ? 'bg-gradient-to-br from-slate-900/70 via-slate-800/60 to-slate-900/70'
-                    : 'bg-premium-card backdrop-blur-sm shadow-premium-lg'
+                    : 'bg-gradient-to-br from-white/80 via-white/60 to-gray-100/70'
                 }`}
-              />{/* Content with proper z-index */}
+              />              {/* Content with proper z-index */}
               <div className="relative z-10 w-full flex flex-col justify-center items-center p-8">
                 <div className="space-y-6 max-w-md text-justify">
                 <p 
@@ -225,12 +226,13 @@ const About: React.FC<AboutProps> = ({ profile }) => {
             </motion.div>
 
             {/* Right Column - Skills, Education, Experience */}
-            <motion.div variants={itemVariants} className="space-y-8">              {/* Skills */}
+            <motion.div variants={itemVariants} className="space-y-8">
+              {/* Skills */}
               <motion.div 
-                className={`${theme === 'cyber' ? 'card-cyber' : theme === 'light' ? 'bg-premium-card shadow-premium border-premium' : 'card'} p-6 rounded-xl transition-all duration-300`}
-                whileHover={{ scale: 1.02, y: -2 }}
+                className={`${theme === 'cyber' ? 'card-cyber' : 'card'} p-6`}
+                whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
-              ><div className="flex items-center mb-4">
+              >                <div className="flex items-center mb-4">
                   <CodeBracketIcon 
                     className={`w-6 h-6 mr-3 ${
                       theme === 'cyber' ? 'text-cyan-400' : 'text-primary-600'
@@ -253,8 +255,6 @@ const About: React.FC<AboutProps> = ({ profile }) => {
                       transition={{ delay: index * 0.1 }}                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
                         theme === 'cyber'
                           ? 'bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 font-mono uppercase tracking-wider'
-                          : theme === 'light'
-                          ? 'bg-premium text-primary-700 shadow-sm border border-primary-100 hover:shadow-md hover:scale-105'
                           : 'bg-primary-100 text-primary-700'
                       }`}
                       style={{
@@ -267,10 +267,10 @@ const About: React.FC<AboutProps> = ({ profile }) => {
                 </div>
               </motion.div>              {/* Experience */}
               <motion.div 
-                className={`${theme === 'cyber' ? 'card-cyber' : theme === 'light' ? 'bg-premium-card shadow-premium border-premium' : 'card'} p-6 rounded-xl transition-all duration-300`}
-                whileHover={{ scale: 1.02, y: -2 }}
+                className={`${theme === 'cyber' ? 'card-cyber' : 'card'} p-6`}
+                whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
-              ><div className="flex items-center mb-4">
+              >                <div className="flex items-center mb-4">
                   <BriefcaseIcon 
                     className={`w-6 h-6 mr-3 ${
                       theme === 'cyber' ? 'text-green-400' : 'text-primary-600'
@@ -289,8 +289,6 @@ const About: React.FC<AboutProps> = ({ profile }) => {
                       key={index}                      className={`border-l-2 pl-4 ${
                         theme === 'cyber' 
                           ? 'border-cyan-400/50' 
-                          : theme === 'light'
-                          ? 'border-primary-300 hover:border-primary-400 transition-colors'
                           : 'border-primary-200'
                       }`}
                       initial={{ opacity: 0, x: -20 }}
@@ -324,10 +322,10 @@ const About: React.FC<AboutProps> = ({ profile }) => {
                 </div>
               </motion.div>              {/* Education */}
               <motion.div 
-                className={`${theme === 'cyber' ? 'card-cyber' : theme === 'light' ? 'bg-premium-card shadow-premium border-premium' : 'card'} p-6 rounded-xl transition-all duration-300`}
-                whileHover={{ scale: 1.02, y: -2 }}
+                className={`${theme === 'cyber' ? 'card-cyber' : 'card'} p-6`}
+                whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
-              ><div className="flex items-center mb-4">
+              >                <div className="flex items-center mb-4">
                   <AcademicCapIcon 
                     className={`w-6 h-6 mr-3 ${
                       theme === 'cyber' ? 'text-purple-400' : 'text-primary-600'
@@ -346,8 +344,6 @@ const About: React.FC<AboutProps> = ({ profile }) => {
                       key={index}                      className={`border-l-2 pl-4 ${
                         theme === 'cyber' 
                           ? 'border-purple-400/50' 
-                          : theme === 'light'
-                          ? 'border-purple-300 hover:border-purple-400 transition-colors'
                           : 'border-primary-200'
                       }`}
                       initial={{ opacity: 0, x: -20 }}

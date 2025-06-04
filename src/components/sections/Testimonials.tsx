@@ -51,12 +51,11 @@ const Testimonials: React.FC<TestimonialsProps> = ({ clients = [] }) => {
     }
   ];
 
-  const displayClients = clients.length > 0 ? clients : defaultClients;
-  useEffect(() => {
+  const displayClients = clients.length > 0 ? clients : defaultClients;  useEffect(() => {
     if (isAutoPlaying && displayClients.length > 1) {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % displayClients.length);
-      }, 6000); // Increased from 5000 to 6000 for smoother experience
+      }, 7000); // Increased from 6000 to 7000 for better viewing time with smoother transitions
       return () => clearInterval(interval);
     }
   }, [isAutoPlaying, displayClients.length]);
@@ -129,32 +128,74 @@ const Testimonials: React.FC<TestimonialsProps> = ({ clients = [] }) => {
             >
               Don't just take my word for it - here's what my clients have to say about working with me
             </p>
-          </motion.div>
-
-          {/* Testimonial Carousel */}
+          </motion.div>          {/* Testimonial Carousel */}
           <motion.div 
             variants={itemVariants}
             className="relative max-w-4xl mx-auto"
             onMouseEnter={() => setIsAutoPlaying(false)}
             onMouseLeave={() => setIsAutoPlaying(true)}
-          >
-            <AnimatePresence mode="wait">              <motion.div
+            style={{
+              perspective: "1000px", // Add 3D perspective for smoother rotations
+              transformStyle: "preserve-3d"
+            }}
+          ><AnimatePresence mode="wait">              <motion.div
                 key={currentIndex}
-                initial={{ opacity: 0, x: 50, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -50, scale: 0.95 }}
+                initial={{ 
+                  opacity: 0, 
+                  x: 60, 
+                  scale: 0.9,
+                  rotateY: 10,
+                  filter: "blur(4px)"
+                }}
+                animate={{ 
+                  opacity: 1, 
+                  x: 0, 
+                  scale: 1,
+                  rotateY: 0,
+                  filter: "blur(0px)"
+                }}
+                exit={{ 
+                  opacity: 0, 
+                  x: -60, 
+                  scale: 0.9,
+                  rotateY: -10,
+                  filter: "blur(4px)"
+                }}
                 transition={{ 
-                  duration: 0.8,
-                  ease: [0.25, 0.1, 0.25, 1], // Custom cubic-bezier for smoother animation
-                  opacity: { duration: 0.6 },
-                  scale: { duration: 0.6 }
-                }}className={`p-8 md:p-12 text-center transition-all duration-500 overflow-hidden ${
+                  duration: 0.9,
+                  ease: [0.16, 1, 0.3, 1], // Improved easing for smoother feel
+                  opacity: { 
+                    duration: 0.7,
+                    ease: [0.25, 0.1, 0.25, 1]
+                  },
+                  scale: { 
+                    duration: 0.8,
+                    ease: [0.16, 1, 0.3, 1]
+                  },
+                  x: {
+                    duration: 0.9,
+                    ease: [0.16, 1, 0.3, 1]
+                  },
+                  rotateY: {
+                    duration: 0.8,
+                    ease: [0.25, 0.1, 0.25, 1]
+                  },
+                  filter: {
+                    duration: 0.6,
+                    ease: "easeOut"
+                  }
+                }}                className={`p-8 md:p-12 text-center transition-all duration-500 overflow-hidden ${
                   theme === 'cyber' 
                     ? 'card-cyber hover:shadow-cyber border-cyan-500/20' 
                     : theme === 'light'
                     ? 'bg-premium-card shadow-premium-lg border-premium rounded-xl hover:shadow-premium-xl'
                     : 'card hover:shadow-xl'
                 }`}
+                style={{
+                  willChange: 'transform, opacity, filter',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden'
+                }}
               >
                 {/* Cyber effects */}
                 {theme === 'cyber' && (
@@ -246,8 +287,18 @@ const Testimonials: React.FC<TestimonialsProps> = ({ clients = [] }) => {
             </AnimatePresence>            {/* Navigation Arrows */}
             {displayClients.length > 1 && (
               <>
-                <button
-                  onClick={prevTestimonial}                  className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full transition-all duration-300 hover:scale-110 ${
+                <motion.button
+                  onClick={prevTestimonial}
+                  whileHover={{ 
+                    scale: 1.1, 
+                    x: -2,
+                    transition: { duration: 0.2, ease: "easeOut" }
+                  }}
+                  whileTap={{ 
+                    scale: 0.95,
+                    transition: { duration: 0.1 }
+                  }}
+                  className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full transition-all duration-300 ${
                     theme === 'cyber'
                       ? 'bg-cyber-800/80 border border-cyan-500/30 text-cyan-300 hover:bg-cyber-700/80 hover:border-cyan-400 hover:text-cyan-200 glow-box'
                       : theme === 'dark'
@@ -257,9 +308,19 @@ const Testimonials: React.FC<TestimonialsProps> = ({ clients = [] }) => {
                   aria-label="Previous testimonial"
                 >
                   <ChevronLeftIcon className="w-6 h-6" />
-                </button>
-                <button
-                  onClick={nextTestimonial}                  className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full transition-all duration-300 hover:scale-110 ${
+                </motion.button>
+                <motion.button
+                  onClick={nextTestimonial}
+                  whileHover={{ 
+                    scale: 1.1, 
+                    x: 2,
+                    transition: { duration: 0.2, ease: "easeOut" }
+                  }}
+                  whileTap={{ 
+                    scale: 0.95,
+                    transition: { duration: 0.1 }
+                  }}
+                  className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full transition-all duration-300 ${
                     theme === 'cyber'
                       ? 'bg-cyber-800/80 border border-cyan-500/30 text-cyan-300 hover:bg-cyber-700/80 hover:border-cyan-400 hover:text-cyan-200 glow-box'
                       : theme === 'dark'
@@ -269,7 +330,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ clients = [] }) => {
                   aria-label="Next testimonial"
                 >
                   <ChevronRightIcon className="w-6 h-6" />
-                </button>
+                </motion.button>
               </>
             )}
           </motion.div>          {/* Dots Indicator */}
@@ -279,10 +340,28 @@ const Testimonials: React.FC<TestimonialsProps> = ({ clients = [] }) => {
               className="flex justify-center space-x-3 mt-8"
             >
               {displayClients.map((_, index) => (
-                <button
+                <motion.button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 hover:scale-125 ${
+                  whileHover={{ 
+                    scale: 1.25,
+                    transition: { 
+                      duration: 0.2, 
+                      ease: [0.25, 0.1, 0.25, 1] 
+                    }
+                  }}
+                  whileTap={{ 
+                    scale: 0.9,
+                    transition: { duration: 0.1 }
+                  }}
+                  animate={{
+                    scale: index === currentIndex ? 1.1 : 1,
+                    transition: {
+                      duration: 0.3,
+                      ease: [0.16, 1, 0.3, 1]
+                    }
+                  }}
+                  className={`w-3 h-3 rounded-full transition-all duration-500 ${
                     index === currentIndex
                       ? theme === 'cyber'
                         ? 'bg-neon-blue glow-box'
@@ -299,7 +378,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ clients = [] }) => {
                 />
               ))}
             </motion.div>
-          )}          {/* Stats */}
+          )}{/* Stats */}
           <motion.div 
             variants={itemVariants}
             className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"

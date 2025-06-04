@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   EyeIcon, 
@@ -33,6 +33,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
       alt: `${project.title} project screenshot`
     });
   };
+
   // Function to close modal
   const closeModal = () => {
     setModalImage({
@@ -42,10 +43,6 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
       alt: ''
     });
   };
-  // Debug effect to log filter changes
-  useEffect(() => {
-    console.log('Filter changed to:', filter);
-  }, [filter]);
   // Ensure projects is always an array and use defaults if empty
   const projectsArray = Array.isArray(projects) && projects.length > 0 ? projects : [];
 
@@ -92,8 +89,8 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
     {
       id: 4,
       title: 'G4MG Pharma',
-      description: 'Comprehensive pharmaceutical management platform featuring inventory tracking, prescription management, patient records, regulatory compliance tools, and integrated billing system. Built with robust security measures, audit trails, and real-time analytics for optimal pharmacy operations.',
-      tech_stack: ['React', 'Node.js', 'PostgreSQL', 'Express', 'TypeScript', 'Material-UI', 'JWT', 'Sequelize', 'AWS', 'Docker'],
+      description: 'Advanced pharmaceutical management platform featuring inventory tracking, prescription management, compliance monitoring, and regulatory reporting. Built with secure data handling, role-based access control, and integrated analytics for pharmaceutical operations and patient safety protocols.',
+      tech_stack: ['React', 'Node.js', 'PostgreSQL', 'Express', 'Redux', 'Material-UI', 'Chart.js', 'PDF.js', 'JWT', 'Bcrypt', 'Moment.js'],
       github_url: 'https://github.com/mayorishere',
       live_url: 'https://g4mgpharma.com',
       image: '/projects-images/g4mgpharma.com',
@@ -102,18 +99,14 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
       created_at: '2024-01-04',
       updated_at: '2024-01-04',
     }
-  ];// Use actual projects if available, otherwise use defaults
+  ];
+
+  // Use actual projects if available, otherwise use defaults
   const currentProjects = projectsArray.length > 0 ? projectsArray : defaultProjects;
-    // Get unique tech stacks for filtering from current projects
+
+  // Get unique tech stacks for filtering from current projects
   const allTechStacks = currentProjects.flatMap(project => project.tech_stack || []);
   const uniqueTechStacks = Array.from(new Set(allTechStacks));
-
-  // Debug logging
-  console.log('=== FILTER DEBUG ===');
-  console.log('Current filter:', filter);
-  console.log('Current projects count:', currentProjects.length);
-  console.log('All tech stacks:', allTechStacks);
-  console.log('Unique tech stacks:', uniqueTechStacks);
 
   // Filter projects based on selected filter
   const filteredProjects = filter === 'all' 
@@ -123,9 +116,6 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
           tech.toLowerCase().includes(filter.toLowerCase())
         )
       );
-
-  console.log('Filtered projects count:', filteredProjects.length);
-  console.log('Filtered project titles:', filteredProjects.map(p => p.title));
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -148,23 +138,24 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
     },  };
 
   const displayProjects = filteredProjects;
-  return (    <section id="projects" className={`section-padding relative transition-all duration-1000 ${
+  return (
+    <section id="projects" className={`section-padding relative transition-all duration-1000 ${
       theme === 'cyber' 
         ? 'bg-gradient-to-br from-cyber-950 via-cyber-900 to-cyber-800' 
         : theme === 'dark'
         ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700'
-        : 'bg-premium bg-gradient-to-br from-white via-slate-50/30 to-purple-50/40'
+        : 'bg-gradient-to-br from-white via-gray-50 to-purple-50'
     }`}>
       {/* Cyber grid overlay */}
       {theme === 'cyber' && (
         <div className="absolute inset-0 cyber-grid opacity-20" />
       )}
       
-      <div className="container-custom relative z-10">        <motion.div
-          key={filter} // Force re-animation when filter changes
+      <div className="container-custom relative z-10">
+        <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate="visible" // Changed from whileInView to animate for immediate trigger
+          whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >          {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
@@ -180,20 +171,19 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
             >
               Here are some of my recent projects that showcase my skills and creativity
             </p>            {/* Filter Buttons */}
-            <div className="flex flex-wrap justify-center gap-3">              <button
+            <div className="flex flex-wrap justify-center gap-3">
+              <button
                 onClick={() => setFilter('all')}
                 className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
                   filter === 'all'
                     ? theme === 'cyber'
                       ? 'btn-cyber bg-neon-blue/20 text-neon-blue border-neon-blue'
-                      : theme === 'dark'
-                      ? 'btn-primary text-white'
-                      : 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-premium-lg border border-purple-500/30'
+                      : 'btn-primary text-white'
                     : theme === 'cyber'
                     ? 'bg-transparent border border-cyan-500/30 text-cyan-300 hover:border-cyan-400 hover:text-cyan-200'
                     : theme === 'dark'
                     ? 'bg-slate-700/50 text-gray-300 hover:bg-slate-600/50 border border-slate-600'
-                    : 'bg-white/90 text-slate-700 hover:bg-white border border-slate-200/80 shadow-premium hover:shadow-premium-lg hover:border-purple-300/50'
+                    : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200'
                 }`}
               >
                 All
@@ -201,18 +191,17 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
               {uniqueTechStacks.slice(0, 5).map((tech) => (
                 <button
                   key={tech}
-                  onClick={() => setFilter(tech)}                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                  onClick={() => setFilter(tech)}
+                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
                     filter === tech
                       ? theme === 'cyber'
                         ? 'btn-cyber bg-neon-blue/20 text-neon-blue border-neon-blue'
-                        : theme === 'dark'
-                        ? 'btn-primary text-white'
-                        : 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-premium-lg border border-purple-500/30'
+                        : 'btn-primary text-white'
                       : theme === 'cyber'
                       ? 'bg-transparent border border-cyan-500/30 text-cyan-300 hover:border-cyan-400 hover:text-cyan-200'
                       : theme === 'dark'
                       ? 'bg-slate-700/50 text-gray-300 hover:bg-slate-600/50 border border-slate-600'
-                      : 'bg-white/90 text-slate-700 hover:bg-white border border-slate-200/80 shadow-premium hover:shadow-premium-lg hover:border-purple-300/50'
+                      : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200'
                   }`}
                 >
                   {tech}
@@ -234,11 +223,9 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
                 className={`group cursor-pointer transition-all duration-500 overflow-hidden ${
                   theme === 'cyber' 
                     ? 'card-cyber hover:shadow-cyber border-cyan-500/20' 
-                    : theme === 'dark'
-                    ? 'card hover:shadow-xl'
-                    : 'card shadow-premium hover:shadow-premium-xl bg-premium-card border-premium'
+                    : 'card hover:shadow-xl'
                 }`}
-              >{/* Project Image */}
+              >                {/* Project Image */}
                 <div 
                   className="relative overflow-hidden h-48 cursor-pointer group/image"
                   onClick={() => handleImageClick(project)}
@@ -249,7 +236,8 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
                     className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
                   />
                   
-                  {/* Zoom overlay indicator */}                  <motion.div
+                  {/* Zoom overlay indicator */}
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ 
                       opacity: hoveredProject === project.id ? 1 : 0 
@@ -257,50 +245,48 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
                     className={`absolute inset-0 flex items-center justify-center ${
                       theme === 'cyber'
                         ? 'bg-gradient-to-br from-cyber-900/90 to-cyber-800/90'
-                        : theme === 'dark'
-                        ? 'bg-black/70'
-                        : 'bg-gradient-to-br from-white/95 via-slate-50/90 to-purple-50/95 backdrop-blur-sm'
+                        : 'bg-black/70'
                     }`}
-                  >{/* View icon */}                    <div className={`absolute top-4 left-4 p-2 rounded-full transition-all duration-300 ${
+                  >                    {/* View icon */}
+                    <div className={`absolute top-4 left-4 p-2 rounded-full transition-all duration-300 ${
                       theme === 'cyber'
                         ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300'
-                        : theme === 'dark'
-                        ? 'bg-white/20 text-white border border-white/40'
-                        : 'bg-gradient-to-br from-white/90 to-slate-100/80 text-slate-700 border border-slate-200/60 shadow-premium'
+                        : 'bg-white/20 text-white border border-white/40'
                     }`}>
                       <EyeIcon className="w-5 h-5" />
                     </div>
                     
-                    <div className="text-center">                      <p className={`text-sm font-medium mb-2 ${
-                        theme === 'cyber' ? 'text-cyan-300' : theme === 'dark' ? 'text-white' : 'text-slate-700'
+                    <div className="text-center">
+                      <p className={`text-sm font-medium mb-2 ${
+                        theme === 'cyber' ? 'text-cyan-300' : 'text-white'
                       }`}>
                         Click to view full image
                       </p>
-                      <div className="flex items-center justify-center space-x-4">                        {/* Action buttons */}                        <button
+                      <div className="flex items-center justify-center space-x-4">                        {/* Action buttons */}
+                        <button
                           className={`p-3 rounded-full transition-all duration-300 hover:scale-110 ${
                             theme === 'cyber'
                               ? 'bg-neon-blue/20 border border-neon-blue/40 hover:bg-neon-blue/30'
-                              : theme === 'dark'
-                              ? 'bg-white/20 hover:bg-white/30'
-                              : 'bg-gradient-to-br from-white/95 to-slate-100/90 hover:from-white hover:to-slate-50 border border-slate-200/60 shadow-premium hover:shadow-premium-lg'
+                              : 'bg-white/20 hover:bg-white/30'
                           }`}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleImageClick(project);
                           }}
                         >
-                          <EyeIcon className={`w-6 h-6 ${theme === 'light' ? 'text-slate-700' : 'text-white'}`} />
+                          <EyeIcon className="w-6 h-6 text-white" />
                         </button>
                       </div>
                     </div>
                   </motion.div>{/* Featured Badge */}
                   {project.is_featured && (
-                    <div className="absolute top-4 right-4">                      <span className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
+                    <div className="absolute top-4 right-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
                         theme === 'cyber'
                           ? 'bg-neon-pink/20 text-neon-pink border border-neon-pink/40 glow-box'
                           : theme === 'dark'
                           ? 'bg-primary-500/20 text-primary-300 border border-primary-400/40'
-                          : 'bg-gradient-to-r from-purple-600 to-purple-700 text-white border border-purple-500/30 shadow-premium'
+                          : 'bg-primary-600 text-white'
                       }`}>
                         Featured
                       </span>
@@ -327,25 +313,27 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
 
                   {/* Tech Stack */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech_stack?.slice(0, 3).map((tech) => (                      <span
+                    {project.tech_stack?.slice(0, 3).map((tech) => (
+                      <span
                         key={tech}
                         className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
                           theme === 'cyber'
                             ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
                             : theme === 'dark'
                             ? 'bg-slate-700 text-gray-300 border border-slate-600'
-                            : 'bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 border border-slate-300/50 shadow-sm hover:shadow-md hover:from-slate-50 hover:to-slate-100'
+                            : 'bg-gray-100 text-gray-700 border border-gray-200'
                         }`}
                       >
                         {tech}
                       </span>
                     ))}
-                    {project.tech_stack && project.tech_stack.length > 3 && (                      <span className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
+                    {project.tech_stack && project.tech_stack.length > 3 && (
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
                         theme === 'cyber'
                           ? 'bg-pink-500/20 text-pink-300 border border-pink-500/30'
                           : theme === 'dark'
                           ? 'bg-slate-700 text-gray-300 border border-slate-600'
-                          : 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 border border-purple-300/50 shadow-sm'
+                          : 'bg-gray-100 text-gray-700 border border-gray-200'
                       }`}>
                         +{project.tech_stack.length - 3} more
                       </span>
