@@ -19,6 +19,7 @@ const Resume: React.FC = () => {
       window.location.reload();
     }
   };
+
   const handleDownloadPDF = async () => {
     if (!resumeRef.current) return;
     

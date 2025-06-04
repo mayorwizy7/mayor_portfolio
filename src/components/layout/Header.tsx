@@ -89,7 +89,7 @@ const Header: React.FC = () => {
                   : 'gradient-text'
               }`}
             >
-              {theme === 'cyber' ? 'Godfirst Wilfred' : 'Godfirst Wilfred'}
+              {theme === 'cyber' ? 'Godfirst' : 'Godfirst'}
             </a>
           </motion.div>
 
