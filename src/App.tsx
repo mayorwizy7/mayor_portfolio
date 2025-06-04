@@ -19,7 +19,7 @@ import LetterGlitch from './components/ui/LetterGlitch';
 import { usePortfolioData } from './hooks/usePortfolioData';
 
 function HomeContent() { // Renamed AppContent to HomeContent for clarity
-  const { profile, projects, clients, blogPosts, loading, error } = usePortfolioData();
+  const { profile, projects, clients, loading, error } = usePortfolioData();
   const [showLoader, setShowLoader] = useState(loading);
   const [fadeOut, setFadeOut] = useState(false);
 
