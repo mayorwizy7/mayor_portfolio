@@ -21,17 +21,10 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setThemeState] = useState<'light' | 'dark' | 'cyber'>('cyber');
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'cyber';
-    if (savedTheme) {
-      setThemeState(savedTheme);
-    } else {
-      // Default to cyber theme for the wow factor
-      setThemeState('cyber');
-    }
-  }, []);
+  const [theme, setThemeState] = useState<'light' | 'dark' | 'cyber'>(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'cyber' | null;
+    return savedTheme || 'cyber'; // Initialize state with saved theme or default to 'cyber'
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;

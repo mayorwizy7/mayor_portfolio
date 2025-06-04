@@ -213,6 +213,10 @@ const Skills: React.FC = () => {
                 { title: 'AWS Certified Solutions Architect', year: '2024', icon: '🏅' },
                 { title: 'Google Cloud Professional', year: '2023', icon: '☁️' },
                 { title: 'Certified Kubernetes Administrator', year: '2023', icon: '⚓' },
+                { title: 'Data Science Certificate', year: '2023', icon: '📊' },
+                { title: 'Network and Application Security Certificate', year: '2023', icon: '🔒' },
+                { title: 'SCRUM', year: '2025', icon: '🌀' },
+                { title: 'AGILE', year: '2025', icon: '⚡' },
               ].map((cert, index) => (
                 <motion.div
                   key={cert.title}

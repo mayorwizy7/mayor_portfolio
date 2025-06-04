@@ -26,14 +26,33 @@ const Header: React.FC = () => {
     { name: 'Testimonials', href: '#testimonials' },
     // { name: 'Blog', href: '#blog' },
     { name: 'Contact', href: '#contact' },
+    { name: 'Resume', href: '/resume' },
   ];
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    // Only scroll for hash links, do not scroll for full paths like /resume
+    if (href.startsWith('#')) {
+      // If on resume page, navigate to home page first then scroll
+      if (window.location.pathname === '/resume') {
+        window.location.href = '/';
+        setTimeout(() => {
+          const element = document.querySelector(href);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      } else {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+      setIsOpen(false);
+    } else {
+      // For full paths, navigate using window.location
+      window.location.href = href;
+      setIsOpen(false);
     }
-    setIsOpen(false);
   };
 
   return (

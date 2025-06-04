@@ -3,18 +3,18 @@
   "name": "Create React App Sample",
   "icons": [
     {
-      "src": "%PUBLIC_URL%/user/mayor.jpg",
+      "src": "/user/mayor.jpg",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon",
       "purpose": "any maskable"
     },
     {
-      "src": "%PUBLIC_URL%/user/mayor.jpg",
+      "src": "/user/mayor.jpg",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "%PUBLIC_URL%/user/mayor.jpg",
+      "src": "/user/mayor.jpg",
       "type": "image/png",
       "sizes": "512x512"
     }

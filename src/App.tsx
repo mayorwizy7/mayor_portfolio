@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Hero from './components/sections/Hero';
@@ -8,15 +11,33 @@ import Projects from './components/sections/Projects';
 import Testimonials from './components/sections/Testimonials';
 // import Blog from './components/sections/Blog';
 import Contact from './components/sections/Contact';
-import { LoadingPage } from './components/ui/LoadingSpinner';
+import Resume from './components/sections/Resume'; // Import Resume component
+// import { LoadingPage } from './components/ui/LoadingSpinner';
+import LetterGlitchLoader from './components/ui/LetterGlitchLoader';
 import ParticleSystem from './components/ui/ParticleSystem';
+import LetterGlitch from './components/ui/LetterGlitch';
 import { usePortfolioData } from './hooks/usePortfolioData';
 
-function AppContent() {
+function HomeContent() { // Renamed AppContent to HomeContent for clarity
   const { profile, projects, clients, blogPosts, loading, error } = usePortfolioData();
+  const [showLoader, setShowLoader] = useState(loading);
+  const [fadeOut, setFadeOut] = useState(false);
 
-  if (loading) {
-    return <LoadingPage />;
+  useEffect(() => {
+    if (!loading) {
+      setFadeOut(true);
+      const timeout = setTimeout(() => {
+        setShowLoader(false);
+      }, 1500); // match fade duration in LetterGlitchLoader
+      return () => clearTimeout(timeout);
+    } else {
+      setShowLoader(true);
+      setFadeOut(false);
+    }
+  }, [loading]);
+
+  if (showLoader) {
+    return <LetterGlitchLoader isVisible={!fadeOut} />;
   }
 
   if (error) {
@@ -38,10 +59,26 @@ function AppContent() {
 
   return (
     <div className="App theme-transition relative min-h-screen animated-bg">
-      {/* Global Particle System */}
+      {/* Global Background Effects */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <ParticleSystem particleCount={50} />
       </div>
+      
+      {/* Letter Glitch Background */}
+      <motion.div
+        className="fixed inset-0 pointer-events-none z-[1]"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: fadeOut ? 0.05 : 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      >
+        <LetterGlitch 
+          glitchColors={['#2b4539', '#61dca3', '#61b3dc', '#00ffff', '#ff00ff']}
+          glitchSpeed={10}
+          outerVignette={true}
+          centerVignette={false}
+          smooth={true}
+        />
+      </motion.div>
       
       {/* Main Content */}
       <div className="relative z-10">
@@ -63,7 +100,12 @@ function AppContent() {
 function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomeContent />} />
+          <Route path="/resume" element={<Resume />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
